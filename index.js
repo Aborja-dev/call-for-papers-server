@@ -1,3 +1,4 @@
+import { mongoConnection } from './setup/mongo.js';
 import bodyParser from 'body-parser';
 import cors from "cors";
 import { app, httpServer, server } from "./setup/setupServer.js";
@@ -7,6 +8,8 @@ import { PORT } from './variables.env.js';
 const runServer = async (port)=>{
     await new Promise((resolve) => httpServer.listen({ port }, resolve))
 }
+
+mongoConnection
 
 export const startServer = async () => {
     await server.start()

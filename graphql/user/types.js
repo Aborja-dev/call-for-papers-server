@@ -1,14 +1,8 @@
-const typeUser = `.
-    type User {
-        username: String!
-        passwordHash: String!
-        email: String!
-        name: String!
-    }
-`
+
 
 export const userTypedefs = `
 type User {
+    id: ID!
     username: String!
     passwordHash: String!
     email: String!
@@ -28,6 +22,6 @@ type User {
             name: String!
         ): User
     
-        deleteUser(username: String!): String
+        deleteUser(userId: ID!): String
     }
 `
