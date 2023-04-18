@@ -25,7 +25,3 @@ const setHash = ()=>users.map(({username, email, name, password}) => {
 })
 
 export const usersWithHash = setHash()
-
-
-
-// export const users = [
