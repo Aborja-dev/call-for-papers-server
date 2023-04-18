@@ -1,4 +1,4 @@
-import { users } from "../../mocks/users"
+import { usersWithHash } from "../../mocks/users"
 import { User } from "../../models/User"
 
 const clearDB = async () => {
@@ -6,7 +6,7 @@ const clearDB = async () => {
 }
 
 const fillDB = async () => {
-    await User.insertMany(users)
+    await User.insertMany(usersWithHash)
 }
 
 export const startDB = async () => {

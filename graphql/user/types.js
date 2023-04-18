@@ -1,12 +1,20 @@
 
 
 export const userTypedefs = `
+enum userTypes {
+    ADMINISTRADOR
+    ORGANIZADOR
+    HABLANTE
+    USUARIO
+}
+
 type User {
     id: ID!
     username: String!
     passwordHash: String!
     email: String!
-    name: String!
+    name: String
+    type:  userTypes!
 }
 
     type Query {
@@ -19,7 +27,8 @@ type User {
             username: String!, 
             password: String!, 
             email: String!, 
-            name: String!
+            name: String!,
+            type:  userTypes
         ): User
     
         deleteUser(userId: ID!): String

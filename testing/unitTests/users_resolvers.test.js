@@ -53,13 +53,15 @@ describe('users_resolvers', () => {
             $username: String!
             $password: String!
             $email: String!
-            $name: String!
+            $name: String!,
+            $type: userTypes
             ) {
                 createUser(
                     username: $username
                     password: $password
                     email: $email
                     name: $name
+                    type: $type
                 ) {
                     id
                     name

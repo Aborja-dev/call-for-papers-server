@@ -1,6 +1,11 @@
-import { usersWithHash, users } from "../../mocks/users.js"
 import { User } from "../../models/User.js"
 import bcrypt from 'bcrypt'
+
+const USER_TYPES = {
+    admin:  'ADMINISTRADOR',
+    organizador: 'ORGANIZADOR',
+    hablante: 'HABLANTE'
+}
 
 const getUser = async (_, {username}) => {
     const user = await User.findOne({username})
@@ -12,10 +17,16 @@ const getUsers = async () => {
     return users
 }
 
-const createUser = async (_, {username, password, email, name}) => {
+const createUser = async (_, {username, password, email, name, type}) => {
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
-    const newUser = new User({username, passwordHash, email, name})
+    const userType = USER_TYPES[type]
+    const newUser = new User({
+        username, 
+        passwordHash, 
+        email, 
+        name, 
+        type: userType || 'HABLANTE'})
     await newUser.save()
     return newUser
 }
