@@ -1,0 +1,18 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+    "jest/globals": true
+  },
+  extends: 'standard',
+  overrides: [
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module'
+  },
+  rules: {
+    'no-tabs': 'off',
+    indent: ['error', 2]
+  }
+}
