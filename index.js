@@ -8,7 +8,6 @@ const runServer = async (port)=>{
     await new Promise((resolve) => httpServer.listen({ port }, resolve))
 }
 
-
 export const startServer = async () => {
     await server.start()
     app.use(
@@ -22,7 +21,8 @@ export const startServer = async () => {
     await runServer(PORT || 4000)
     console.log(`🚀 Server ready at http://localhost:${PORT}/`);
 }
-
-// startServer()
+if (process.env.NODE_ENV === 'development') {
+    startServer()
+}
 
 

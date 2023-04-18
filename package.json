@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
-    "start": "nodemon index.js"
+    "test": "cross-env NODE_ENV=testing node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
+    "start": "cross-env NODE_ENV=development nodemon index.js"
   },
   "repository": {
     "type": "git",
