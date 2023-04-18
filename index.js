@@ -23,6 +23,6 @@ export const startServer = async () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}/`);
 }
 
-startServer()
+// startServer()
 
 
