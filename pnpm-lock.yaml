@@ -24,6 +24,7 @@ specifiers:
   mongoose-unique-validator: 4.0.0
   nodemon: 2.0.22
   supertest: 6.3.3
+  uuid: 9.0.0
 
 dependencies:
   '@apollo/server': 4.6.0_graphql@16.6.0
@@ -37,6 +38,7 @@ dependencies:
   graphql-tag: 2.12.6_graphql@16.6.0
   mongoose: 7.0.4
   mongoose-unique-validator: 4.0.0_mongoose@7.0.4
+  uuid: 9.0.0
 
 devDependencies:
   '@babel/core': 7.21.4

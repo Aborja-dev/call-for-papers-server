@@ -27,13 +27,17 @@ describe('proposal tests', () => {
         const query = gql`
             mutation CreateProposal($proposal: ProposalInput!) {
                 createProposal(proposal: $proposal) {
+                    proponent {
+                        id
+                        name
+                    }
                     id
                     title
                 }
             }
         `
-        const result = server.executeOperation({ query, variables: { proposal: newProposal } })
-        const proposal = result.body.singleResult?.data.createProposal
+        const result = await server.executeOperation({ query, variables: { proposal: newProposal } })
+        const proposal = result.body.singleResult.data.createProposal || null
         expect(proposal.id).toBeDefined()
         expect(proposal).toHaveProperty('title', newProposal.title)
     })
