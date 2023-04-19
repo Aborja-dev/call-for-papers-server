@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import muv from 'mongoose-unique-validator'
-const USER_TYPES_ENUM = ['ADMINISTRADOR', 'ORGANIZADOR', 'HABLANTE', 'USUARIO']
+import { USER_TYPES_ENUM } from "../types/const.d.js";
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 

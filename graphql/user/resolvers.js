@@ -19,7 +19,7 @@ const getUsers = async () => {
     return users
 }
 
-const validatePassword = (pasword) => passwordRegex.test(password)
+const validatePassword = (password) => passwordRegex.test(password)
 
 const createUser = async (_, {username, password, email, name, type}) => {
     if (validatePassword(password) === false) {
@@ -29,13 +29,14 @@ const createUser = async (_, {username, password, email, name, type}) => {
     } 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
-    const userType = USER_TYPES[type]
+    const userType = USER_TYPES[type] || 'HABLANTE'
     const newUser = new User({
         username, 
         passwordHash, 
         email, 
         name, 
-        type: userType || 'HABLANTE'})
+        type: userType 
+    })
     try {
         await newUser.save()
         return newUser

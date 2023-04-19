@@ -1,6 +1,5 @@
-
-
-export const userTypedefs = `
+import gql from 'graphql-tag'
+export const userTypedefs = gql`
 enum userTypes {
     ADMINISTRADOR
     ORGANIZADOR

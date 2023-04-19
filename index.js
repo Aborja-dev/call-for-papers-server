@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from "cors";
 import { app, httpServer, server } from "./setup/setupServer.js";
 import { expressMiddleware } from '@apollo/server/express4';
-import { PORT } from './variables.env.js';
+import { PORT } from './types/const.d.js';
 
 const runServer = async (port)=>{
     await new Promise((resolve) => httpServer.listen({ port }, resolve))

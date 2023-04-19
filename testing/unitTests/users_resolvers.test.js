@@ -2,8 +2,8 @@ import { server } from "../../setup/setupServer"
 import { mongoConnection } from "../../setup/mongo"
 import mongoose from "mongoose"
 import { users } from "../../mocks/users"
-import { startDB } from "../utils/startDB.test"
-import { getAnId, getAndMap } from "../utils/tests_helpers.test"
+import { startDB } from "../utils/startDB"
+import { getAnId, getAndMap } from "../utils/tests_helpers"
 import { User } from "../../models/User"
 
 describe('users_resolvers', () => {
@@ -46,7 +46,7 @@ describe('users_resolvers', () => {
             username: 'aabo1233',
             password: 'hola123',
             email: 'abraham@email.com',
-            name:'Abraham'
+            name: 'Abraham'
         }
         const query = `
         mutation CreateNewUser(
@@ -65,6 +65,7 @@ describe('users_resolvers', () => {
                 ) {
                     id
                     name
+                    type
             }
         }
         `
