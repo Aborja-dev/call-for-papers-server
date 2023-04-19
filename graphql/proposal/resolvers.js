@@ -17,6 +17,8 @@ input ProposalInput {
 import { Proposal } from "../../models/TalkProposal.js"
 import { v4 as uuidv4 } from "uuid";
 
+const convertToADate = (time) => new Date("1970-01-01T" + time);
+
 const createProposal = async (_, {proposal}, ) => {
   const {userId, title, topic, estimateDuration } = proposal
     const proposalInfo = {
@@ -24,7 +26,7 @@ const createProposal = async (_, {proposal}, ) => {
       title,
       topic,
       status: 'ENVIADA',
-      estimateDuration: estimateDuration.hour,
+      estimateDuration: convertToADate(estimateDuration),
       uniqueCode: uuidv4().toString()
     }
     try {
@@ -39,8 +41,20 @@ const createProposal = async (_, {proposal}, ) => {
     }
 }
 
+const deleteProposal = async (_, {id}) => {
+  try {
+    const proposal = await Proposal.findByIdAndDelete(id)
+    return proposal
+  } catch (error) {
+    throw new GraphQLError('request invalid', {
+      extensions: { code: 'REQUEST_INVALID', extensions: { error },
+    }})
+  }
+}
+
 export const proposalResolvers = {
   Mutation: {
-    createProposal
+    createProposal,
+    deleteProposal
   }
 }

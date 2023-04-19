@@ -11,7 +11,7 @@ const runServer = async (port)=>{
 
 mongoConnection
 
-export const startServer = async () => {
+export const startServer = async (port) => {
     await server.start()
     app.use(
         '/',
@@ -21,11 +21,11 @@ export const startServer = async () => {
             context: async ({ req }) => ({context: req.context})
         }),
     )
-    await runServer(PORT || 4000)
-    console.log(`🚀 Server ready at http://localhost:${PORT}/`);
+    await runServer(port)
+    console.log(`🚀 Server ready at http://localhost:${port}/`);
 }
 if (process.env.NODE_ENV === 'development') {
-    startServer()
+    startServer(4002)
 }
 
 

@@ -21,7 +21,7 @@ type Proposal {
     title: String!
     topic: String!
     abstract: String,
-    estimateDuration: Hour!,
+    estimateDuration: String!,
     status: ProposalStatus!,
     attachments: [String]
     streamed: Boolean
@@ -33,13 +33,14 @@ input ProposalInput {
     title: String!
     topic: String!
     abstract: String,
-    estimateDuration: HourInput!,
+    estimateDuration: String!,
     attachments: [String]
     streamed: Boolean
 }
 
 type Mutation {
     createProposal(proposal: ProposalInput): Proposal
+    deleteProposal(id: ID!): String
 }
 
 `

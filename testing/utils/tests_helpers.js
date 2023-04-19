@@ -6,6 +6,12 @@ export const getAnId = async () => {
     return user.id
 }
 
+export const getAnIdFromModel = async (model) => {
+    const response = await model.findOne({})
+    const user = response.toJSON()
+    return user.id
+}
+
 export const getAndMap = async ({model, property}) => {
     const response = await model.find({})
     const responseMap = response.map(item => {
@@ -17,6 +23,6 @@ export const getAndMap = async ({model, property}) => {
 
 export const getAll = async (model) => {
     const response = await model.find({})
-    const collection = response.toJSON()
+    const collection = response.map(element=> element.toJSON())
     return collection
 }

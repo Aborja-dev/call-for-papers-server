@@ -14,7 +14,7 @@ const talkSchema = mongoose.Schema({
     },
     topic: mongoose.Schema.Types.String,
     abstract: mongoose.Schema.Types.String,
-    estimateDuration: mongoose.Schema.Types.Number,
+    estimateDuration: mongoose.Schema.Types.Date,
     status: {
         type: mongoose.Schema.Types.String,
         enum: STATUS_PROPOSAL_ENUM,
