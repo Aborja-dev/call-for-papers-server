@@ -1,4 +1,3 @@
-import gql from 'graphql-tag'
 import { User } from '../../models/User'
 import { USER_TYPES_ENUM } from '../../types/const.d'
 
@@ -39,8 +38,8 @@ export const authOrganizerContext = async () => {
   }
 }
 
-export const GETCONTEXT = gql`
-    queary GetContest {
+export const GETCONTEXT = `
+    query GetContest {
         pruebas {
             context
         }
