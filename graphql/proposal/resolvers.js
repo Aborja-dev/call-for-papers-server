@@ -19,8 +19,9 @@ import { v4 as uuidv4 } from "uuid";
 
 const convertToADate = (time) => new Date("1970-01-01T" + time);
 
-const createProposal = async (_, {proposal}, ) => {
+const createProposal = async (_, {proposal}, context ) => {
   const {userId, title, topic, estimateDuration } = proposal
+  console.log(context)
     const proposalInfo = {
       proponent: userId,
       title,

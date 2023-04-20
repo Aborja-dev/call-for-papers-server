@@ -1,4 +1,4 @@
-import { User } from "../../models/User"
+import { User } from "../../models/User.js"
 
 export const getAnId = async () => {
     const response = await User.findOne({})
@@ -21,8 +21,18 @@ export const getAndMap = async ({model, property}) => {
     return responseMap
 }
 
+export const getJSONCOllection = async (model, query) => {
+    const collection = await model.find(query)
+    return collection.map(element => element.toJSON())
+}
+
 export const getAll = async (model) => {
     const response = await model.find({})
     const collection = response.map(element=> element.toJSON())
     return collection
 }
+
+export const choice = (arr) => {
+    let randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  }
