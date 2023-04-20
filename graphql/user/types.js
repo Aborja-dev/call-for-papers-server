@@ -16,10 +16,14 @@ type User {
     name: String
     type:  userTypes!
 }
-
+type Token {
+    role: userTypes!
+    token: String!
+}
     type Query {
         getUser(username: String!): User
         getUsers: [User]
+        login(username: String, password: String): Token
     }
 
     type Mutation {

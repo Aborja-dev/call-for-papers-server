@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export const GET_USER = gql`
     query getUser($username: String!) {
@@ -43,4 +43,14 @@ export const DELETE_USER = gql`
     mutation DeleteUser($userId: ID!) {
         deleteUser(userId: $userId)
     }
+`
+
+export const LOGIN = gql`
+    query Login ($username: String!, $password: String){
+        login(username: $username, password: $password){
+            role
+            token
+        }
+    }
+
 `

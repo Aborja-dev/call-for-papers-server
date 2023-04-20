@@ -4,15 +4,14 @@ import { createServer } from "http";
 import express from "express";
 import { userResolvers } from "../graphql/user/resolvers.js";
 import { proposalResolvers } from "../graphql/proposal/resolvers.js";
-import { typeDefs } from "../graphql/schema.js";
-
+import { rootResolvers, typeDefs } from "../graphql/schema.js";
 
 export const app = express()
 export const httpServer = createServer(app)
 
 export const server = new ApolloServer({
     typeDefs: typeDefs,
-    resolvers: [userResolvers, proposalResolvers],
+    resolvers: [userResolvers, proposalResolvers, rootResolvers],
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 })
 

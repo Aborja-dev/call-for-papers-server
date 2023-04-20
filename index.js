@@ -11,7 +11,7 @@ const runServer = async (port)=>{
 
 mongoConnection
 
-export const startServer = async (port) => {
+export const startServer = async (port = PORT) => {
     await server.start()
     app.use(
         '/',

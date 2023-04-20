@@ -1,5 +1,8 @@
 import { User } from "../../models/User.js"
+import { GraphQLError } from "graphql"
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { SECRET } from "../../types/const.d.js"
 const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])([a-zA-Z\d]{7,})$/
 
 
@@ -53,10 +56,45 @@ const deleteUser = async (_, {userId}) => {
     return `El usuario ${user.username} fue eliminado`
 }
 
+const loginError = (error)=>{
+    throw new GraphQLError('usuario o contraseña incorrectos', {
+        extensions: { code: 'BAD_LOGIN_REQUEST', extensions: { error: error },
+      }})
+}
+
+const login = async (_, {username, password})=> {
+    try {
+         //buscar username
+    const user = await User.findOne({username})
+    if (!user) {
+        loginError('usernameError')
+    }
+    // validar password
+    const passwordValidated = bcrypt.compareSync(password, user.passwordHash)
+    if (!passwordValidated) {
+        loginError('passwordError')
+    }
+    // generar token
+    const userForToken = {
+        userId: user.id,
+        type: user.type
+    }
+    const token = await jwt.sign(userForToken, SECRET)
+    // retornar token
+    return {
+        role: user.type,
+        token
+    }   
+    } catch (error) {
+        loginError(error)
+    }
+}
+
 export const userResolvers = {
     Query: {
         getUser,
-        getUsers
+        getUsers,
+        login
     },
     Mutation: {
         createUser,   
