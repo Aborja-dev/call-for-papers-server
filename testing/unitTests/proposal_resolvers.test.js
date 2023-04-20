@@ -2,9 +2,9 @@ import { server } from "../../setup/setupServer"
 import { mongoConnection } from "../../setup/mongo"
 import mongoose from "mongoose"
 import { startDB } from "../utils/startDB"
-import { getAll, getAnIdFromModel } from "../utils/tests_helpers";
+import { findInDB, getAll, getAnIdFromModel } from "../utils/tests_helpers";
 import { Proposal } from "../../models/TalkProposal"
-import { CREATE_PROPOSAL, DELETE_PROPOSAL } from "../graphql/proposalQueries"
+import { CREATE_PROPOSAL, DELETE_PROPOSAL, UPDATE_PROPOSAL } from "../graphql/proposalQueries"
 import { authSpeakerContext } from "../graphql/contexts"
 describe('proposal tests', () => {
     beforeAll(async () => {
@@ -42,4 +42,21 @@ describe('proposal tests', () => {
         const proposalsId = proposals.map(p => p.id)
         expect(proposalsId).not.toContain(idToDelete)
     })
+    test('should update a proposal',async () => { 
+        const idToUpdate = await getAnIdFromModel(Proposal)
+        const variables = {
+            id:  idToUpdate,
+            topic: 'Ciencias Naturales',
+            status: 'PRESELECCION'
+        }
+        const result = await server.executeOperation({
+            query: UPDATE_PROPOSAL,
+            variables
+        })
+        const response = result.body.singleResult.data.updateProposal
+        expect(response.id).toEqual(variables.id)
+        const proposalUpdated = await findInDB(Proposal, {_id: idToUpdate}) || null
+        expect(proposalUpdated.topic).toEqual(variables.topic)
+        expect(proposalUpdated.status).toEqual(variables.status)
+     })
 })

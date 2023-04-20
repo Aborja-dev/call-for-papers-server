@@ -38,14 +38,12 @@ export const startDB = async () => {
     try {
         await clearDB();
         await fillDB(User, usersWithHash);
-        const proposals = await addUserForInsert(USER_TYPES_ENUM[2]);
-        await fillDB(Proposal, proposals);
-        console.log('La carga ha sido finalizada con éxito');
+        const _proposals = await addUserForInsert(USER_TYPES_ENUM[2]);
+        await fillDB(Proposal, _proposals);
+        console.info('La carga ha sido finalizada con éxito')
     } catch (error) {
         console.error(`Se encontró un error al intentar cargar la base de datos: ${error}`);
         process.exit(1); // Salir del proceso con un código de error
-    } finally {
-        mongoose.connection.close(); // Cerrar la conexión de Mongoose
     }
 };
 
@@ -55,11 +53,11 @@ if (process.env.NODE_ENV === 'testingDB') {
     mongoose
         .connect(MONGODB_TEST_URI)
         .then(() => {
-            console.log('Base de datos conectada con éxito');
-            return startDB(); // Devolver una promesa para poder manejar errores en startDB
+            console.info('Base de datos conectada con éxito');
+            return startDB; // Devolver una promesa para poder manejar errores en startDB
         })
-        .then(() => {
-            console.log('La carga de datos ha sido finalizada con éxito');
+        .then((startDB) => {
+            startDB() // Ejecutar startDB
         })
         .catch((error) => {
             console.error(`Se produjo un error al intentar conectar con el servidor MongoDB: ${error}`);

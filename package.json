@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=testing node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --detectOpenHandles",
+    "test:silent": "pnpm test -- --silent",
     "start": "cross-env NODE_ENV=development nodemon index.js",
     "start:DB": "cross-env NODE_ENV=testingDB nodemon testing/utils/startDB.js"
   },

@@ -14,6 +14,7 @@ input ProposalInput {
 }
 
 */
+import { GraphQLError } from "graphql";
 import { Proposal } from "../../models/TalkProposal.js"
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,7 +22,6 @@ const convertToADate = (time) => new Date("1970-01-01T" + time);
 
 const createProposal = async (_, {proposal}, context ) => {
   const {userId, title, topic, estimateDuration } = proposal
-  console.log(context)
     const proposalInfo = {
       proponent: userId,
       title,
@@ -52,10 +52,36 @@ const deleteProposal = async (_, {id}) => {
     }})
   }
 }
-
+const createQuery = (...args) => {
+  let queries = {}
+  const _args = args[0]
+  for (const key in _args) {
+    if (Object.hasOwnProperty.call(_args, key)) {
+      if (_args[key]) {
+        queries[key] = _args
+        [key]
+      }
+    }
+  }
+  return queries
+}
+const updateProposal = async (_, {id , topic, estimateDuration, status, streamed}) => {
+  const query = createQuery({topic, estimateDuration, status, streamed})
+  const filter = {id}
+  try {
+    const updatedProposal = await Proposal.findOneAndUpdate(id, query, {new: true})
+    return updatedProposal
+  } catch (error) {
+    throw new GraphQLError('request invalid', {
+      extensions: { code: 'REQUEST_INVALID', extensions: { error },
+    }})
+  }
+  
+}
 export const proposalResolvers = {
   Mutation: {
     createProposal,
-    deleteProposal
+    deleteProposal,
+    updateProposal
   }
 }

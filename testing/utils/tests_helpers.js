@@ -12,13 +12,17 @@ export const getAnIdFromModel = async (model) => {
     return user.id
 }
 
-export const getAndMap = async ({model, property}) => {
-    const response = await model.find({})
-    const responseMap = response.map(item => {
-        const itemJSON = item.toJSON()
-        return itemJSON[property]
-    })
-    return responseMap
+export const getAndMap = async ({ model, property, query = {} }) => {
+    try {
+        const response = await model.find(query)
+        const responseMap = response.map(item => {
+            const itemJSON = item.toJSON()
+            return itemJSON[property]
+        })
+        return responseMap
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
 export const getJSONCOllection = async (model, query) => {
@@ -28,11 +32,20 @@ export const getJSONCOllection = async (model, query) => {
 
 export const getAll = async (model) => {
     const response = await model.find({})
-    const collection = response.map(element=> element.toJSON())
+    const collection = response.map(element => element.toJSON())
+    return collection
+}
+
+export const findInDB = async (model, query={}) => {
+    const response = await model.find(query)
+    if (response.length === 1) {
+        return response[0].toJSON()
+    } 
+    const collection = response.map(element => element.toJSON())
     return collection
 }
 
 export const choice = (arr) => {
     let randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
-  }
+}
