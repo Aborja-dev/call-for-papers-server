@@ -4,7 +4,10 @@ const EVENT_TYPE_ENUM = ['PRESENCIAL', 'VIRTUAL', 'HIBRIDO']
 const EVENT_STATUS_ENUM = ['BORRADOR', 'EN_CURSO', 'FINALIZADO']
 
 const eventSchema = mongoose.Schema({
-  name: mongoose.SchemaTypes.String,
+  name: {
+    type: mongoose.SchemaTypes.String,
+    required: true
+  },
   type: {
     type: mongoose.SchemaTypes.String,
     enum: EVENT_TYPE_ENUM
@@ -14,10 +17,19 @@ const eventSchema = mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'Proposal'
   }],
-  startingDate: mongoose.SchemaTypes.Date,
-  endingDate: mongoose.SchemaTypes.Date,
+  startingDate: {
+    type: mongoose.SchemaTypes.Date,
+    required: true
+  },
+  endingDate: {
+    type: mongoose.SchemaTypes.Date,
+    required: true
+  },
   bannerUrl: mongoose.SchemaTypes.String,
-  url: mongoose.SchemaTypes.String,
+  url: {
+    type: mongoose.SchemaTypes.String,
+    required: true
+  },
   location: mongoose.SchemaTypes.String,
   organizers: [
     {
