@@ -1,82 +1,81 @@
-/*
-type Mutation {
-    createProposal(proposal: ProposalInput): Proposal
+import { GraphQLError } from 'graphql'
+import { Proposal } from '../../models/TalkProposal.js'
+import { v4 as uuidv4 } from 'uuid'
+import { allowRole, convertToADate, createQuery, verifyAuth } from '../../js/helpers.js'
+
+const createProposal = async (_, { proposal }, context, info) => {
+  if (!verifyAuth(context)) {
+    throw new GraphQLError('acceso invalid', {
+      extensions: { code: 'UNATHORIZED', extensions: { attributes: 'password' } }
+    })
+  }
+  if (!allowRole(context, info)) {
+    throw new GraphQLError('no tienes los accesos necesarios', {
+      extensions: { code: 'PERMISSION ROLE', extensions: { attributes: 'password' } }
+    })
+  }
+  const { userId, title, topic, estimateDuration } = proposal
+  const proposalInfo = {
+    proponent: userId,
+    title,
+    topic,
+    status: 'ENVIADA',
+    estimateDuration: convertToADate(estimateDuration),
+    uniqueCode: uuidv4().toString()
+  }
+  try {
+    const newProposal = new Proposal(proposalInfo)
+    const proposalSaved = await newProposal.save()
+    const populatedProposal = await proposalSaved.populate('proponent', { id: true, name: true })
+    return populatedProposal
+  } catch (error) {
+    throw new GraphQLError('request invalid', {
+      extensions: { code: 'REQUEST_INVALID', extensions: { error } }
+    })
+  }
 }
 
-input ProposalInput {
-    userId: ID!
-    title: String!
-    topic: String!
-    abstract: String,
-    estimateDuration: HourInput!,
-    attachments: [String]
-    streamed: Boolean
-}
-
-*/
-import { GraphQLError } from "graphql";
-import { Proposal } from "../../models/TalkProposal.js"
-import { v4 as uuidv4 } from "uuid";
-
-const convertToADate = (time) => new Date("1970-01-01T" + time);
-
-const createProposal = async (_, {proposal}, context ) => {
-  const {userId, title, topic, estimateDuration } = proposal
-    const proposalInfo = {
-      proponent: userId,
-      title,
-      topic,
-      status: 'ENVIADA',
-      estimateDuration: convertToADate(estimateDuration),
-      uniqueCode: uuidv4().toString()
-    }
-    try {
-      const newProposal = new Proposal(proposalInfo)
-      const proposalSaved = await newProposal.save()
-      const populatedProposal = await proposalSaved.populate('proponent', {id: true, name: true})
-      return populatedProposal
-    } catch (error) {
-      throw new GraphQLError('request invalid', {
-        extensions: { code: 'REQUEST_INVALID', extensions: { error },
-      }})
-    }
-}
-
-const deleteProposal = async (_, {id}) => {
+const deleteProposal = async (_, { id }, context, info) => {
+  if (!verifyAuth(context)) {
+    throw new GraphQLError('acceso invalid', {
+      extensions: { code: 'UNATHORIZED', extensions: { attributes: 'password' } }
+    })
+  }
+  if (!allowRole(context, info)) {
+    throw new GraphQLError('no tienes los accesos necesarios', {
+      extensions: { code: 'PERMISSION ROLE', extensions: { attributes: 'password' } }
+    })
+  }
   try {
     const proposal = await Proposal.findByIdAndDelete(id)
     return proposal
   } catch (error) {
     throw new GraphQLError('request invalid', {
-      extensions: { code: 'REQUEST_INVALID', extensions: { error },
-    }})
+      extensions: { code: 'REQUEST_INVALID', extensions: { error } }
+    })
   }
 }
-const createQuery = (...args) => {
-  let queries = {}
-  const _args = args[0]
-  for (const key in _args) {
-    if (Object.hasOwnProperty.call(_args, key)) {
-      if (_args[key]) {
-        queries[key] = _args
-        [key]
-      }
-    }
+
+const updateProposal = async (_, { id, topic, estimateDuration, status, streamed }, context, info) => {
+  if (!verifyAuth(context)) {
+    throw new GraphQLError('acceso invalid', {
+      extensions: { code: 'UNATHORIZED', extensions: { attributes: 'password' } }
+    })
   }
-  return queries
-}
-const updateProposal = async (_, {id , topic, estimateDuration, status, streamed}) => {
-  const query = createQuery({topic, estimateDuration, status, streamed})
-  const filter = {id}
+  if (!allowRole(context, info)) {
+    throw new GraphQLError('no tienes los accesos necesarios', {
+      extensions: { code: 'PERMISSION ROLE', extensions: { attributes: 'password' } }
+    })
+  }
+  const query = createQuery({ topic, estimateDuration, status, streamed })
   try {
-    const updatedProposal = await Proposal.findOneAndUpdate(id, query, {new: true})
+    const updatedProposal = await Proposal.findOneAndUpdate(id, query, { new: true })
     return updatedProposal
   } catch (error) {
     throw new GraphQLError('request invalid', {
-      extensions: { code: 'REQUEST_INVALID', extensions: { error },
-    }})
+      extensions: { code: 'REQUEST_INVALID', extensions: { error } }
+    })
   }
-  
 }
 export const proposalResolvers = {
   Mutation: {

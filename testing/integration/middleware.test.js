@@ -26,14 +26,16 @@ describe('tests for middleware', () => {
     await mongoose.connection.close()
   })
   test('should retrun a auth context', async () => {
+    const { token } = userToken
     const response = await request(serverUrl)
       .post('/')
       .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
       .send({ query: GETCONTEXT })
-    const { context } = authSpeakerContext()
-    const { token } = userToken
-    const contextResult = response.body.data.pruebas
-    expect(contextResult).toHaveProperty('auth')
+    const { contextValue: context } = await authSpeakerContext()
+    const contextResultString = response.body.data.pruebas.context
+    const contextResult = JSON.parse(contextResultString)
+    expect(contextResult.context).toHaveProperty('auth')
     expect(contextResult).toEqual(context)
   })
 })

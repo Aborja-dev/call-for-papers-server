@@ -18,9 +18,25 @@ export const authSpeakerContext = async () => {
   const type = USER_TYPES_ENUM[2]
   return {
     contextValue: {
-      auth: {
-        userId: await getUser(type),
-        type
+      context: {
+        auth: {
+          userId: await getUser(type),
+          type
+        }
+      }
+    }
+  }
+}
+
+export const authAdminContext = async () => {
+  const type = USER_TYPES_ENUM[0]
+  return {
+    contextValue: {
+      context: {
+        auth: {
+          userId: await getUser(type),
+          type
+        }
       }
     }
   }
@@ -30,9 +46,11 @@ export const authOrganizerContext = async () => {
   const type = USER_TYPES_ENUM[1]
   return {
     contextValue: {
-      auth: {
-        userId: await getUser(type),
-        type
+      context: {
+        auth: {
+          userId: await getUser(type),
+          type
+        }
       }
     }
   }
